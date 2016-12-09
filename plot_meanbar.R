@@ -44,7 +44,7 @@ summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
 # ----plot---
 library(ggplot2)
 library(reshape2)
-aucs <- read.table('d:/Program Files/JetBrains/PyWorkspace/dsimModuleTheory/evaresult/eva70_i_auc.txt', 
+aucs <- read.table('data/auc_sh.txt', 
                   header = TRUE, sep = '\t', stringsAsFactors = FALSE)
 maucs <- melt(aucs,id=c('trial'))
 bardata <- summarySE(maucs, measurevar = "value", groupvars = c('variable'))
@@ -55,15 +55,52 @@ p <- ggplot(bardata, aes(x=variable, y=value, fill=variable)) +
   geom_errorbar(aes(ymin=value-sd, ymax=value+sd),
                 width=.2,                    # Width of the error bars
                 position=position_dodge(.9)) + 
+  theme_bw() + 
   scale_fill_brewer(palette="Set1") + 
-  theme_bw() + theme(legend.position="none", 
-                     axis.text=element_text(size=13), 
-                     axis.title=element_text(size=13)) +
+  + theme(legend.position="none", 
+                     axis.text=element_text(size=15), 
+                     axis.title=element_text(size=15), 
+                     plot.title = element_text(hjust = -0.08)) +
   coord_cartesian(ylim=c(0.85, 1)) + 
-  scale_x_discrete(limits=c("FunSim", "Hamaneh", "Sun_topo", "NetSim", "ModuleSim")) + 
-  labs(title='', x='methods', y='Average of AUC')
+  scale_x_discrete(limits=c("Hamaneh", "FunSim", "NetSim", "Sun_topo", "ModuleSim")) + 
+  labs(title='A', x='method', y='Average of AUC')
 # -----------
-
+# ---plot2---
+library(ggplot2)
+library(reshape2)
+avgv_di <- read.table('D:/Program Files/JetBrains/PyWorkspace/dsimModuleTheory/evaresult/evaclassification_di.tsv', 
+                   header = TRUE, sep = '\t', stringsAsFactors = FALSE)
+avgv_dh <- read.table('D:/Program Files/JetBrains/PyWorkspace/dsimModuleTheory/evaresult/evaclassification_dh.tsv', 
+                      header = TRUE, sep = '\t', stringsAsFactors = FALSE)
+avgv_si <- read.table('D:/Program Files/JetBrains/PyWorkspace/dsimModuleTheory/evaresult/evaclassification_si.tsv', 
+                      header = TRUE, sep = '\t', stringsAsFactors = FALSE)
+avgv_sh <- read.table('D:/Program Files/JetBrains/PyWorkspace/dsimModuleTheory/evaresult/evaclassification_sh.tsv', 
+                      header = TRUE, sep = '\t', stringsAsFactors = FALSE)
+avgv <- rbind(avgv_di, avgv_dh, avgv_si, avgv_sh)
+mavgv <- summarySE(avgv, measurevar = 'value', groupvars = c('dataset', 'category'))
+mavgv$category <- factor(mavgv$category, levels = c('all', 'same', 'diff'))
+p <- ggplot(mavgv, aes(x=dataset, y=value, fill=category)) + 
+  geom_bar(size=.6, 
+           stat="identity", 
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=value-sd, ymax=value+sd),
+                size=.6, 
+                width=.3,                    # Width of the error bars
+                position=position_dodge(0.9)) + 
+  theme_bw() + 
+  scale_fill_brewer(palette="Set1", 
+                    breaks=c('all', 'same', 'diff'),
+                    labels=c('all', 'same', 'diff')) + 
+  theme(legend.position="bottom", 
+        legend.title = element_blank(), 
+        axis.text=element_text(size=15), 
+        axis.title=element_text(size=15)) +
+  coord_cartesian(ylim=c(-0.05, 0.6)) + 
+  scale_x_discrete(limits=c("di", "dh", "si", "sh"), 
+                   labels=c("DisGeNET_interactome", "DisGeNET_hPPIN", 
+                            "SIDD_interactome", "SIDD_hPPIN")) + 
+  labs(title='', x='dataset', y='Average similarity score of disease pairs')
+# -----------
 
 
 

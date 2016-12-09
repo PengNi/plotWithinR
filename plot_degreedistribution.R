@@ -3,9 +3,9 @@ library(ggplot2)
 library(dSimer)
 library(grid)
 library(gridExtra)
-p <- plot_dgDegreeDistribution("d:/workspace/helloworld_R/disease_gene_assos_umls_dcutoff006_entrezid.tsv", 
+p <- plot_dgDegreeDistribution("d:/workspace/helloworld_R/gene_disease_assos_doid2entrezid_disgenetcutoff006.tsv", 
                                1, 2, "A                                           DisGeNET")
-p1 <- plot_dgDegreeDistribution("d:/workspace/helloworld_R/rwr_dgassos_sidd.tab", 
+p1 <- plot_dgDegreeDistribution("d:/workspace/helloworld_R/rwr_dgassos_sidd_entrezid.tab", 
                                 1, 2, "B                                                SIDD")
 mylegend<-g_legend(p)
 mplots <- grid.arrange(arrangeGrob(p + theme(legend.position="none"),
@@ -40,8 +40,8 @@ plot_dgDegreeDistribution <- function(dgfile, dcol, gcol, plottitle){
   
   p <- ggplot(pmelt, aes(x=xs, y=ys, group = type)) + 
     geom_point(aes(shape=type, colour=type), size = 3) + 
-    scale_shape_manual(values=c(1,2)) + 
     theme_bw() + 
+    scale_shape_manual(values=c(1,2)) + 
     scale_y_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
                   labels = scales::trans_format("log10", scales::math_format(10^.x)), 
                   limits = c(10^-5, 1)) + 
