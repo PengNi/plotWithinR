@@ -49,6 +49,8 @@ aucs <- read.table('data/auc_sh.txt',
 maucs <- melt(aucs,id=c('trial'))
 bardata <- summarySE(maucs, measurevar = "value", groupvars = c('variable'))
 # bardata <- bardata[order(bardata$value),]
+
+cbPalette <- c('#addd8e','#d9f0a3', '#006837', '#78c679', '#31a354')
 p <- ggplot(bardata, aes(x=variable, y=value, fill=variable)) + 
   geom_bar(width=0.6, stat="identity", 
            position=position_dodge(.9)) +
@@ -56,8 +58,10 @@ p <- ggplot(bardata, aes(x=variable, y=value, fill=variable)) +
                 width=.2,                    # Width of the error bars
                 position=position_dodge(.9)) + 
   theme_bw() + 
-  scale_fill_brewer(palette="Set1") + 
-  + theme(legend.position="none", 
+  scale_fill_manual(values = cbPalette, 
+                    breaks = c("Hamaneh", "FunSim", "NetSim", "Sun_topo", "ModuleSim"), 
+                    labels = c("Hamaneh", "FunSim", "NetSim", "Sun_topo", "ModuleSim")) + 
+  theme(legend.position="none", 
                      axis.text=element_text(size=15), 
                      axis.title=element_text(size=15), 
                      plot.title = element_text(hjust = -0.08)) +
@@ -68,17 +72,20 @@ p <- ggplot(bardata, aes(x=variable, y=value, fill=variable)) +
 # ---plot2---
 library(ggplot2)
 library(reshape2)
-avgv_di <- read.table('D:/Program Files/JetBrains/PyWorkspace/dsimModuleTheory/evaresult/evaclassification_di.tsv', 
+avgv_di <- read.table('D:/Documents/workspace/pyworkspace/dsimModuleTheory/evaresult/evaclassification_di.tsv', 
                    header = TRUE, sep = '\t', stringsAsFactors = FALSE)
-avgv_dh <- read.table('D:/Program Files/JetBrains/PyWorkspace/dsimModuleTheory/evaresult/evaclassification_dh.tsv', 
+avgv_dh <- read.table('D:/Documents/workspace/pyworkspace/dsimModuleTheory/evaresult/evaclassification_dh.tsv', 
                       header = TRUE, sep = '\t', stringsAsFactors = FALSE)
-avgv_si <- read.table('D:/Program Files/JetBrains/PyWorkspace/dsimModuleTheory/evaresult/evaclassification_si.tsv', 
+avgv_si <- read.table('D:/Documents/workspace/pyworkspace/dsimModuleTheory/evaresult/evaclassification_si.tsv', 
                       header = TRUE, sep = '\t', stringsAsFactors = FALSE)
-avgv_sh <- read.table('D:/Program Files/JetBrains/PyWorkspace/dsimModuleTheory/evaresult/evaclassification_sh.tsv', 
+avgv_sh <- read.table('D:/Documents/workspace/pyworkspace/dsimModuleTheory/evaresult/evaclassification_sh.tsv', 
                       header = TRUE, sep = '\t', stringsAsFactors = FALSE)
 avgv <- rbind(avgv_di, avgv_dh, avgv_si, avgv_sh)
 mavgv <- summarySE(avgv, measurevar = 'value', groupvars = c('dataset', 'category'))
 mavgv$category <- factor(mavgv$category, levels = c('all', 'same', 'diff'))
+
+cbPalette <- c('#fc8d59','#e34a33', '#b30000')
+
 p <- ggplot(mavgv, aes(x=dataset, y=value, fill=category)) + 
   geom_bar(size=.6, 
            stat="identity", 
@@ -88,11 +95,12 @@ p <- ggplot(mavgv, aes(x=dataset, y=value, fill=category)) +
                 width=.3,                    # Width of the error bars
                 position=position_dodge(0.9)) + 
   theme_bw() + 
-  scale_fill_brewer(palette="Set1", 
+  scale_fill_manual(values=cbPalette, 
                     breaks=c('all', 'same', 'diff'),
-                    labels=c('all', 'same', 'diff')) + 
+                    labels=c('all', 'same', 'different')) + 
   theme(legend.position="bottom", 
         legend.title = element_blank(), 
+        legend.text = element_text(size = 15),
         axis.text=element_text(size=15), 
         axis.title=element_text(size=15)) +
   coord_cartesian(ylim=c(-0.05, 0.6)) + 

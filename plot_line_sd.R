@@ -66,11 +66,14 @@ auc_di <- read.table('data/auc_di.txt',
 bar_di = rawauc2bardata(auc_di, 'di')
 
 bars = rbind(bar_sh, bar_si, bar_dh, bar_di)
+
+
+cbPalette <- c('#addd8e','#d9f0a3', '#006837', '#78c679', '#31a354')
 p <- ggplot(data=bars, aes(x=data, y=value, group=variable, colour=variable)) + 
-  geom_line(size=1, position=position_dodge(0.08)) + 
+  geom_line(size=2, position=position_dodge(0.08)) + 
   geom_errorbar(aes(ymin=value-sd, ymax=value+sd), 
-                width=.5, position=position_dodge(0.08)) + 
-  geom_point(aes(shape=variable),
+                width=0.5, size=1, position=position_dodge(0.08)) + 
+  geom_point(# aes(shape=variable),
              size=2.5, 
              position=position_dodge(0.08)) + 
   theme_bw() + 
@@ -80,17 +83,17 @@ p <- ggplot(data=bars, aes(x=data, y=value, group=variable, colour=variable)) +
         legend.key.size = unit(0.8, "cm"), 
         axis.text=element_text(size=15), 
         axis.title=element_text(size=15)) + 
-  scale_colour_brewer(palette="Set1", 
+  scale_colour_manual(values = cbPalette, 
                       # name  ="method",
                       breaks=c("Hamaneh", "FunSim", "NetSim", 
                                "Sun_topo", "ModuleSim"),
                       labels=c("Hamaneh", "FunSim", "NetSim", 
                                "Sun_topo", "ModuleSim")) + 
-  scale_shape_manual(values=c(0, 1, 2, 5, 6), 
-                     breaks=c("Hamaneh", "FunSim", "NetSim", 
-                              "Sun_topo", "ModuleSim"),
-                     labels=c("Hamaneh", "FunSim", "NetSim", 
-                              "Sun_topo", "ModuleSim")) + 
+  # scale_shape_manual(values=c(0, 1, 2, 5, 6), 
+  #                    breaks=c("Hamaneh", "FunSim", "NetSim", 
+  #                             "Sun_topo", "ModuleSim"),
+  #                    labels=c("Hamaneh", "FunSim", "NetSim", 
+  #                             "Sun_topo", "ModuleSim")) + 
   labs(title='', x='Dataset', 
        y='Average of AUC') + 
   scale_x_discrete(limits=c("di","dh","si", 'sh'), 

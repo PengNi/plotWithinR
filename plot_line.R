@@ -4,6 +4,8 @@ library(reshape2)
 pairrank <- read.table("data/answerpairs_sh.txt", 
                        header = TRUE, stringsAsFactors = F, sep = '\t')
 mpairrank<-melt(pairrank,id=c("rank"))
+
+cbPalette <- c('#addd8e','#d9f0a3', '#006837', '#78c679', '#31a354')
 p<-ggplot(data=mpairrank, aes(x=rank, y=value, 
                                group=variable, 
                                colour=variable)) +
@@ -14,8 +16,8 @@ p<-ggplot(data=mpairrank, aes(x=rank, y=value,
         legend.key.size = unit(0.8, "cm"), 
         axis.text=element_text(size=15), 
         axis.title=element_text(size=15), 
-        plot.title = element_text(hjust = -0.08)) + 
-  scale_colour_brewer(palette="Set1", 
+        plot.title = element_text(hjust = -0.07)) + 
+  scale_colour_manual(values = cbPalette, 
                       # name  ="method",
                       breaks=c("Hamaneh", "FunSim", "NetSim", 
                                "Sun_topo", "ModuleSim"),
