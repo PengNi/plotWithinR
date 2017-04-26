@@ -5,20 +5,20 @@ library(grid)
 library(gridExtra)
 
 # ---disease gene-----
-p <- plot_dgDegreeDistribution("d:/Documents/workspace/rworkspace/helloworld_R/gene_disease_assos_doid2entrezid_disgenetcutoff006.tsv", 
-                               1, 2, "A                                                     DisGeNET")
-p1 <- plot_dgDegreeDistribution("d:/Documents/workspace/rworkspace/helloworld_R/rwr_dgassos_sidd_entrezid.tab", 
-                                1, 2, "B                                                          SIDD")
-mylegend<-g_legend(p)
-mplots <- grid.arrange(arrangeGrob(p + theme(legend.position="none"),
-                                   p1 + theme(legend.position="none"),
+p1 <- plot_dgDegreeDistribution("d:/Documents/workspace/rworkspace/helloworld_R/gene_disease_assos_doid2entrezid_disgenetcutoff006.tsv", 
+                               1, 2, "A                                 DisGeNET")
+p2 <- plot_dgDegreeDistribution("d:/Documents/workspace/rworkspace/helloworld_R/rwr_dgassos_sidd_entrezid.tab", 
+                                1, 2, "B                                     SIDD")
+mylegend<-g_legend(p1)
+mplots <- grid.arrange(arrangeGrob(p1 + theme(legend.position="none"),
+                                   p2 + theme(legend.position="none"),
                                    nrow=1),
                        mylegend, nrow=2,heights=c(10, 1))
 # ---------------
 
 
 # ---disease mirna
-p <- plot_dgDegreeDistribution("d:/Documents/workspace/pyworkspace/BiRW/data/birw_mim2mirna/omim2mirnapre_mimminerneedle.txt", 
+p <- plot_dgDegreeDistribution("d:/Documents/workspace/pyworkspace/BiRW/data/birw_mim2mirna/omim2mirnapre_all.txt", 
                                1, 2, "")
 
 # ----------------------------------------------------
@@ -42,7 +42,7 @@ plot_dgDegreeDistribution <- function(dgfile, dcol, gcol, plottitle){
   dmelt <- data.frame(type=rep('disease', length(ddensity)), 
                       xs=c(0:(length(ddensity)-1)), 
                       ys=ddensity)
-  gmelt <- data.frame(type=rep('gene', length(gdensity)), 
+  gmelt <- data.frame(type=rep('miRNA', length(gdensity)), 
                       xs=c(0:(length(gdensity)-1)), 
                       ys=gdensity)
   pmelt <- rbind.data.frame(dmelt, gmelt)
@@ -50,22 +50,22 @@ plot_dgDegreeDistribution <- function(dgfile, dcol, gcol, plottitle){
   pmelt <- pmelt[pmelt$ys != 0.0, ]
   
   p <- ggplot(pmelt, aes(x=xs, y=ys, group = type)) + 
-    geom_point(aes(shape=type, colour=type), size = 3, stroke = 2) + 
+    geom_point(aes(shape=type, colour=type), size = 5, stroke = 2) + 
     theme_bw() + 
     scale_shape_manual(values=c(1,2)) + 
     scale_y_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
                   labels = scales::trans_format("log10", scales::math_format(10^.x)), 
-                  limits = c(10^-5, 1)) + 
+                  limits = c(10^-3, 1)) + 
     scale_x_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
                   labels = scales::trans_format("log10", scales::math_format(10^.x)), 
-                  limits = c(1, 3000)) + 
+                  limits = c(1, 300)) + 
     theme(legend.position="bottom", 
           legend.title=element_blank(),
           legend.text = element_text(size = 20), 
           axis.ticks = element_blank(),
           axis.text=element_text(size=15), 
           axis.title=element_text(size=15), 
-          plot.title = element_text(hjust = -0.13)) + 
+          plot.title = element_text(size=20, hjust = -0.12)) + 
     labs(title=plottitle, x='Degree', y='Frequency') + 
     annotation_logticks(short = unit(.05,"cm"),
                         mid = unit(0.1,"cm"),
