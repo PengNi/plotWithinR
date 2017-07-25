@@ -78,11 +78,11 @@ p <- ggplot(data=bars, aes(x=data, y=value, group=variable, colour=variable)) +
              position=position_dodge(0.08)) + 
   theme_bw() + 
   theme(legend.position="bottom",
-        legend.text = element_text(size = 15),
+        legend.text = element_text(size = 26),
         legend.title = element_blank(),
         legend.key.size = unit(0.8, "cm"), 
-        axis.text=element_text(size=15), 
-        axis.title=element_text(size=15)) + 
+        axis.text=element_text(size=21), 
+        axis.title=element_text(size=25)) + 
   scale_colour_manual(values = cbPalette, 
                       # name  ="method",
                       breaks=c("Hamaneh", "FunSim", "NetSim", 

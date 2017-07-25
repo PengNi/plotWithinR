@@ -62,8 +62,8 @@ p <- ggplot(bardata, aes(x=variable, y=value, fill=variable)) +
                     breaks = c("Hamaneh", "FunSim", "NetSim", "Sun_topo", "ModuleSim"), 
                     labels = c("Hamaneh", "FunSim", "NetSim", "Sun_topo", "ModuleSim")) + 
   theme(legend.position="none", 
-                     axis.text=element_text(size=15), 
-                     axis.title=element_text(size=15), 
+                     axis.text=element_text(size=16), 
+                     axis.title=element_text(size=16), 
                      plot.title = element_text(hjust = -0.08)) +
   coord_cartesian(ylim=c(0.85, 1)) + 
   scale_x_discrete(limits=c("Hamaneh", "FunSim", "NetSim", "Sun_topo", "ModuleSim")) + 
@@ -100,9 +100,9 @@ p <- ggplot(mavgv, aes(x=dataset, y=value, fill=category)) +
                     labels=c('all', 'same', 'different')) + 
   theme(legend.position="bottom", 
         legend.title = element_blank(), 
-        legend.text = element_text(size = 15),
-        axis.text=element_text(size=15), 
-        axis.title=element_text(size=15)) +
+        legend.text = element_text(size = 18),
+        axis.text=element_text(size=18), 
+        axis.title=element_text(size=18)) +
   coord_cartesian(ylim=c(-0.05, 0.6)) + 
   scale_x_discrete(limits=c("di", "dh", "si", "sh"), 
                    labels=c("DisGeNET_interactome", "DisGeNET_hPPIN", 

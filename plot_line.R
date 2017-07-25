@@ -11,11 +11,11 @@ p<-ggplot(data=mpairrank, aes(x=rank, y=value,
                                colour=variable)) +
   geom_line(size=1.5) + theme_bw() + 
   theme(legend.position="bottom",
-        legend.text = element_text(size = 15),
+        legend.text = element_text(size = 16),
         legend.title = element_blank(),
         legend.key.size = unit(0.8, "cm"), 
-        axis.text=element_text(size=15), 
-        axis.title=element_text(size=15), 
+        axis.text=element_text(size=16), 
+        axis.title=element_text(size=16), 
         plot.title = element_text(hjust = -0.07)) + 
   scale_colour_manual(values = cbPalette, 
                       # name  ="method",
